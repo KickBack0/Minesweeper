@@ -71,9 +71,6 @@ void printBoard(bool revealAll = false) {
         cout << c << ' ';
     }
     std::cout << "\n   _-_-_-_-_-_-_-_-_-_";
-    /*for (int c = 0; c < SIZE; c++) {
-        cout << "_";
-    }*/
     cout << endl;
     for (int r = 0; r < SIZE; r++) {
         cout << r << " |";
