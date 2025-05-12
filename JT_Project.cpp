@@ -79,7 +79,7 @@ void printBoard(bool revealAll = false) {
                     cout << board[r][c].adjacentMines << ' ';
             }
             else {
-                cout << " . ";
+                cout << ". ";
             }
         }
         cout << endl;
@@ -105,7 +105,7 @@ int main() {
         cout << "Enter row and column to reveal: ";
             cin >> row >> col;
 
-        // Where is the Fail Function?
+
 		if (cin.fail() || row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
 			cin.clear(); // clear the error flag
 			cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
@@ -113,7 +113,9 @@ int main() {
 			continue;
 		}
 
-        // Wo
+        // reveal(row, col);
+
+        // Fail condition
         if (board[row][col].isMine) {
             std::cout << "BOOM! You hit a mine.\n";
             printBoard(true);
@@ -122,6 +124,7 @@ int main() {
 
         reveal(row, col);
 
+        // Win Condition
         if (checkWin()) {
             cout << "You won!\n";
             printBoard(true);
