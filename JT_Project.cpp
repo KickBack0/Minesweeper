@@ -67,7 +67,13 @@ void mark(int r, int c) {
 
 void printBoard(bool revealAll = false) {
     cout << "   ";
-    for (int c = 0; c < SIZE; c++) cout << c << ' ';
+    for (int c = 0; c < SIZE; c++) {
+        cout << c << ' ';
+    }
+    std::cout << "\n   _-_-_-_-_-_-_-_-_-_";
+    /*for (int c = 0; c < SIZE; c++) {
+        cout << "_";
+    }*/
     cout << endl;
     for (int r = 0; r < SIZE; r++) {
         cout << r << " |";
@@ -86,6 +92,7 @@ void printBoard(bool revealAll = false) {
     }
 }
 
+
 bool checkWin() {
     for (int r = 0; r < SIZE; r++)
         for (int c = 0; c < SIZE; c++)
@@ -93,6 +100,7 @@ bool checkWin() {
                 return false;
     return true;
 }
+
 
 int main() {
     srand(time(0));
