@@ -79,7 +79,7 @@ void printBoard(bool revealAll = false) {
                     cout << board[r][c].adjacentMines << ' ';
             }
             else {
-                cout << "# ";
+                cout << " . ";
             }
         }
         cout << endl;
