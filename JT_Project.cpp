@@ -172,9 +172,17 @@ int main() {
             continue;
         }
 	        // Check actions and values
-        if (board[row][col].isMine) {
-            bo
-        }
+
+while(calculateAdjacents()>=1||board[row][col].isMine){
+for(int a=-1;a>=1;a++){
+for(int j=-1;j>=1;j++){
+if(board[a][j].fail()){continue;}
+else{if (board[a][j].isMine) {
+            board[a][j].isMine=false;
+placeMines().placed--;
+placeMines();
+        }}}}
+}
 		if (!board[row][col].mark) {
             reveal(row, col);
 			continue;
