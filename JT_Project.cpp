@@ -65,11 +65,50 @@ void mark(int r, int c) {
 }
 
 void printBoard(bool revealAll = false) {
+	if(SIZE>10){
+		cout << "    ";
+   		for (int c = 0; c < SIZE; c++) {
+			if(c>=10){
+				cout << c << ' ';
+			}
+			else{cout << c << "  ";}
+    		}
+		std::cout <<"\n   ";
+		for(int i=0;i<SIZE-1;i++){
+    			std::cout << "_-";
+		}
+		std::cout << "_"
+    		cout << endl;
+    		for (int r = 0; r < SIZE; r++) {
+			if(r>=10){cout << r << " |";}
+			else{cout << r << "  |";}
+        		for (int c = 0; c < SIZE; c++) {
+            			if (revealAll || board[r][c].revealed) {
+               				if (board[r][c].isMine)
+                    				cout << "*  ";
+                			else{
+                    				cout << board[r][c].adjacentMines << "  ";
+					}
+					else if (board[r][c].mark) {
+						cout << "F  ";
+					}
+            				else {
+                				cout << ".  ";
+            				}
+        			}
+        		cout << endl;
+    			}
+		}
+	}
     cout << "   ";
     for (int c = 0; c < SIZE; c++) {
         cout << c << ' ';
     }
-    std::cout << "\n   _-_-_-_-_-_-_-_-_-_";
+	std::cout <<"\n   ";
+	for(int i=0;i<SIZE-1;i++){
+    	std::cout << "_-";
+	}
+	std::cout << "_"
     cout << endl;
     for (int r = 0; r < SIZE; r++) {
         cout << r << " |";
