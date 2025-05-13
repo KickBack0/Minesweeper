@@ -107,7 +107,9 @@ int main() {
     calculateAdjacents();
 
     while (true) {
-	system(clr);
+
+        system("cls");
+
         printBoard();
         int row, col;
         string flag;
