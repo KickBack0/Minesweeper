@@ -99,6 +99,7 @@ void printBoard(bool revealAll = false) {
         		cout << endl;
     			}
 		}
+	return;
 	}
     cout << "   ";
     for (int c = 0; c < SIZE; c++) {
@@ -144,14 +145,43 @@ int main() {
     srand(time(0));
     placeMines();
     calculateAdjacents();
-
-    while (true) {
-
-        system("cls");
-
-        printBoard();
-        int row, col;
+	int row, col;
         string flag;
+	//start makes sure 0 to start and can't be a mine
+	printBoard();
+	 cin >> row;
+        // Check if the user entered a flag command
+        if (cin.fail()) {
+            cin.clear(); // clear the error flag
+            cin >> flag >> row >> col; // attempt to read the "mark" command
+            if (flag == "mark"||flag=="f"||flag=="m" || flag == "flag" && row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
+                mark(row, col); // toggle mark
+                continue;
+            } else {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+                cout << "Invalid input. Please try again.\n";
+                continue;
+            }
+        }
+        cin >> col;
+		// Validate row and column input
+		if (cin.fail() || row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
+            cin.clear(); // clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+            cout << "Invalid input. Please enter valid row and column numbers.\n";
+            continue;
+        }
+	        // Check actions and values
+        if (board[row][col].isMine) {
+            bo
+        }
+		if (!board[row][col].mark) {
+            reveal(row, col);
+			continue;
+		}
+    while (true) {
+        system("cls");
+        printBoard();
         cout << "Enter row and column to reveal (or 'mark <row> <col>'): ";
         cin >> row;
 
