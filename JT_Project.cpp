@@ -77,7 +77,7 @@ void printBoard(bool revealAll = false) {
 		for(int i=0;i<SIZE-1;i++){
     			std::cout << "_-";
 		}
-		std::cout << "_"
+        std::cout << "_";
     		cout << endl;
     		for (int r = 0; r < SIZE; r++) {
 			if(r>=10){cout << r << " |";}
@@ -159,10 +159,13 @@ int main() {
     placeMines();
     calculateAdjacents();
 	int row, col;
-        string flag;
+    string flag;
 	//start makes sure 0 to start and can't be a mine
-	printBoard();
-	 cin >> row;
+    system("cls");
+    printBoard();
+    cout << "Enter row and column to reveal (or 'mark <row> <col>'): ";
+        
+	cin >> row;
         // Check if the user entered a flag command
         if (cin.fail()) {
             cin.clear(); // clear the error flag
@@ -192,25 +195,30 @@ int main() {
             for(int a=-1;a>=1;a++){
                 for(int j=-1;j>=1;j++){
                     // Remove mines in a 3x3 area around (row, col)
-                    for (int a = -1; a <= 1; a++) {
-                        for (int j = -1; j <= 1; j++) {
-                            int nr = row + a;
-                            int nc = col + j;
-                            if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE) {
-                                if (board[nr][nc].isMine) {
-                                    board[nr][nc].isMine = false;
-                                    removed++;
-                                }
-                            }
+                    int nr = row + a;
+                    int nc = col + j;
+                    if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE) {
+                        if (board[nr][nc].isMine) {
+                            board[nr][nc].isMine = false;
+                            removed++;
                         }
-                    }
-                    // Re-place the removed mines elsewhere
-                    for (int i = 0; i < removed; i++) {
-                        placeMines();
                     }
                 }
             }
-            if (removed == 0) { break; }
+                    // Re-place the removed mines elsewhere
+                    for (int i = 0; i < removed; i++) {
+                        int placed = 0;
+                        while (placed < MINES) {
+                            int r = rand() % SIZE;
+                            int c = rand() % SIZE;
+                            if (!board[r][c].isMine) {
+                                board[r][c].isMine = true;
+                                placed++;
+                            }
+                        }
+                        calculateAdjacents();
+                    }
+            if (removed == 0) { removed = 0; break; }
         }
 
 		if (!board[row][col].mark) {
