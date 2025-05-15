@@ -72,7 +72,7 @@ void printBoard(bool revealAll = false) {
 				cout << c << ' ';
 			}
 			else{cout << c << "  ";}
-    		}
+    	}
 		std::cout <<"\n   ";
 		for(int i=0;i<SIZE-1;i++){
     			std::cout << "_-";
@@ -89,7 +89,7 @@ void printBoard(bool revealAll = false) {
                 			else{
                     				cout << board[r][c].adjacentMines << "  ";
 					}
-					else if (board[r][c].mark) {
+					if (board[r][c].mark) {
 						cout << "F  ";
 					}
             				else {
@@ -139,20 +139,20 @@ bool checkWin() {
                 return false;
     return true;
 }
-int inRange() {
-    int inRange = 0;
-    for (int a = -1; a >= 1; a++) {
-        for (int j = -1; j >= 1; j++) {
-            if (board[a][j].fail()) { continue; }
-            else {
-                if (board[a][j].isMine) {
-                    inRange++;
-                }
-            }
-        }
-    }
-	return inRange;
-}
+//int inRange() {
+//    int inRange = 0;
+//    for (int a = -1; a >= 1; a++) {
+//        for (int j = -1; j >= 1; j++) {
+//            if (board[a][j].fail()) { continue; }
+//            else {
+//                if (board[a][j].isMine) {
+//                    inRange++;
+//                }
+//            }
+//        }
+//    }
+//	return inRange;
+//}
 
 int main() {
     srand(time(0));
@@ -169,11 +169,11 @@ int main() {
             cin >> flag >> row >> col; // attempt to read the "mark" command
             if (flag == "mark"||flag=="f"||flag=="m" || flag == "flag" && row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
                 mark(row, col); // toggle mark
-                continue;
+                
             } else {
                 cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
                 cout << "Invalid input. Please try again.\n";
-                continue;
+                
             }
         }
         cin >> col;
@@ -182,28 +182,39 @@ int main() {
             cin.clear(); // clear the error flag
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
             cout << "Invalid input. Please enter valid row and column numbers.\n";
-            continue;
+            
         }
 	        // Check actions and values
 
 		
-        while(inRange()!=0){
+        while(true){
+            int removed = 0;
             for(int a=-1;a>=1;a++){
                 for(int j=-1;j>=1;j++){
-                    if(board[a][j].fail()){continue;}
-                    else{
-                        if (board[a][j].isMine) {
-                            board[a][j].isMine=false;
-                            placeMines().placed--;
-                            placeMines();
-                        }  
+                    // Remove mines in a 3x3 area around (row, col)
+                    for (int a = -1; a <= 1; a++) {
+                        for (int j = -1; j <= 1; j++) {
+                            int nr = row + a;
+                            int nc = col + j;
+                            if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE) {
+                                if (board[nr][nc].isMine) {
+                                    board[nr][nc].isMine = false;
+                                    removed++;
+                                }
+                            }
+                        }
+                    }
+                    // Re-place the removed mines elsewhere
+                    for (int i = 0; i < removed; i++) {
+                        placeMines();
                     }
                 }
             }
+            if (removed == 0) { break; }
         }
+
 		if (!board[row][col].mark) {
             reveal(row, col);
-			continue;
 		}
     while (true) {
         system("cls");
