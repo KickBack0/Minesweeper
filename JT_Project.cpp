@@ -186,6 +186,7 @@ int main() {
         }
 	        // Check actions and values
 
+
 		
         while(true){
             int removed = 0;
@@ -216,6 +217,7 @@ int main() {
 		if (!board[row][col].mark) {
             reveal(row, col);
 		}
+
     while (true) {
         system("cls");
         printBoard();
