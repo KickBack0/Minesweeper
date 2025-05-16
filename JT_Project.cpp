@@ -219,7 +219,13 @@ int main() {
                         }
                         calculateAdjacents();
                     }
-            if (removed == 0) { removed = 0; break; }
+            if (removed == 0) { 
+                calculateAdjacents();
+                removed = 0; 
+                system("cls");
+                printBoard(); 
+                break; 
+            }
         }
 
 		if (!board[row][col].mark) {
