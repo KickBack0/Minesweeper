@@ -34,6 +34,12 @@ void calculateAdjacents() {
     for (int r = 0; r < SIZE; r++) {
         for (int c = 0; c < SIZE; c++) {
             if (board[r][c].isMine) continue;
+            board[r][c].adjacentMines=0;
+        }
+    }
+    for (int r = 0; r < SIZE; r++) {
+        for (int c = 0; c < SIZE; c++) {
+            if (board[r][c].isMine) continue;
             for (int dr = -1; dr <= 1; dr++) {
                 for (int dc = -1; dc <= 1; dc++) {
                     int nr = r + dr, nc = c + dc;
@@ -228,9 +234,56 @@ int main() {
             }
         }
 
-		if (!board[row][col].mark) {
+        // Pseudocode plan:
+        // 1. Remove mines in a 3x3 area around (row, col) (including the cell itself) on the first move.
+        // 2. Track how many mines were removed.
+        // 3. For each removed mine, place a new mine randomly elsewhere (not in the 3x3 area and not on an existing mine).
+        // 4. Recalculate adjacent mine counts after all changes.
+
+        // Replacement for the selected code:
+        while (true) {
+            int removed = 0;
+            // Mark cells in the 3x3 area around (row, col) as forbidden for new mines
+            vector<pair<int, int>> forbidden;
+            for (int dr = -1; dr <= 1; dr++) {
+                for (int dc = -1; dc <= 1; dc++) {
+                    int nr = row + dr;
+                    int nc = col + dc;
+                    if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE) {
+                        forbidden.push_back({nr, nc});
+                        if (board[nr][nc].isMine) {
+                            board[nr][nc].isMine = false;
+                            removed++;
+                        }
+                    }
+                }
+            }
+            // Place the removed mines elsewhere (not in forbidden area)
+            int placed = 0;
+            while (placed < removed) {
+                int r = rand() % SIZE;
+                int c = rand() % SIZE;
+                bool isForbidden = false;
+                for (auto& f : forbidden) {
+                    if (f.first == r && f.second == c) {
+                        isForbidden = true;
+                        break;
+                    }
+                }
+                if (!isForbidden && !board[r][c].isMine) {
+                    board[r][c].isMine = true;
+                    placed++;
+                }
+            }
+            calculateAdjacents();
+            system("cls");
+            printBoard();
+            break;
+        }
+
+        if (!board[row][col].mark) {
             reveal(row, col);
-		}
+        }
 
     while (true) {
         system("cls");
